@@ -66,15 +66,10 @@ shinyServer(function(input, output){
   city_weather_bike_df <- test_weather_data_generation()
   # Create another data frame called `cities_max_bike` with each row contains city location info and max bike
   # prediction for the city
-  cities_max_bike <- city_weather_bike_df %>%
-    group_by(CITY_ASCII) %>%
-    summarize(
-      LNG = first(LNG),
-      LAT = first(LAT),
-      BIKE_PREDICTION = max(BIKE_PREDICTION),
-      BIKE_PREDICTION_LEVEL = BIKE_PREDICTION_LEVEL[which.max(BIKE_PREDICTION)],
-      LABEL = first(LABEL)
-    )
+   cities_max_bike <- city_weather_bike_df %>%
+    group_by(CITY_ASCII,LAT,LNG,BIKE_PREDICTION,BIKE_PREDICTION_LEVEL,
+             LABEL,DETAILED_LABEL,FORECASTDATETIME,TEMPERATURE) %>%
+    summarize(BIKE_PREDICTION = max(BIKE_PREDICTION))
   # Observe drop-down event
   
   # Then render output plots with an id defined in ui.R
